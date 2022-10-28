@@ -10,6 +10,7 @@ const telegram = new TelegramClient();
 
 async function sendEvent(event) {
   console.info(event);
+  log = exec("docker logs " + event.Action.Actor.ID)
   if (imageRegExp.test(event.from)) {
     const template = templates[`${event.Type}_${event.Action}`];
     if (template) {
