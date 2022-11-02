@@ -1,10 +1,14 @@
-version: "3.1"
-
+version: '3'
 services:
   daemon:
-    image: arefaslani/docker-telegram-notifier
+    image: docker-email-notifier:latest
+    container_name: docker-email-notifier
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
     environment:
-      - TELEGRAM_NOTIFIER_BOT_TOKEN=...
-      - TELEGRAM_NOTIFIER_CHAT_ID=...
+      - PUID=0
+      - PGID=0
+      - EMAIL_SENDER=damien@laWEbox.com
+      - EMAIL_SENDER_PASSWORD=nyekllupznxoyuxe
+      - EMAIL_TO=alexia@lawebox.com, charles@lawebox.com,  damien@lawebox.com, mehdi@lawebox.com

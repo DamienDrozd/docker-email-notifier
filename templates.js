@@ -8,7 +8,7 @@ module.exports.container_kill = e =>
 Image: <b>${e.Actor.Attributes.image}</b>
 Exit Code: <b>${e.Actor.Attributes.exitCode}</b>
 Container ID: <b>${e.Actor.ID}</b>
-Logs: <b>${exec("docker logs " + e.Actor.ID)}</b>`;
+Logs: <b>${e.logs}</b>`;
 
 
 module.exports.container_die = module.exports.container_kill;

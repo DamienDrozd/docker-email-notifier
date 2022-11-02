@@ -13,8 +13,10 @@
   "author": "arefaslani",
   "license": "Apache-2.0",
   "dependencies": {
+    "build": "^0.1.4",
     "dockerode": "^2.5.3",
     "immutable": "^3.8.2",
+    "nodemailer": "^6.8.0",
     "telegraf": "^3.20.0"
   }
 }
