@@ -15,11 +15,11 @@ class MailClient {
       
   }
 
-  send(message) {
+  send(message, subject) {
     this.mailOptions = {
       from: process.env.EMAIL_SENDER ,
       to: process.env.EMAIL_TO,
-      subject: 'Docker Alert',
+      subject: 'Docker Alert' + (subject ? `: ${subject}` : ''),
       text: message
     };
     console.log("message : ", message)
@@ -34,7 +34,7 @@ class MailClient {
   }
 
   async sendError(e) {
-    await this.send(`Error: ${e}`);
+    await this.send(`Error: ${e}`, e.Actor.Attributes.image);
   }
 }
 

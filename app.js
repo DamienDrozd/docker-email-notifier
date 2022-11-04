@@ -5,6 +5,8 @@ const JSONStream = require('JSONStream');
 const templates = require('./templates');
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec)
+// const spawn = promisify(require('child_process').spawn);
+
 
 const imageRegExp = new RegExp(process.env.image_regexp);
 const docker = new Docker();
@@ -13,8 +15,14 @@ const mail = new MailClient();
 
 async function getLogs(id) {
   // Exec output contains both stderr and stdout outputs
-  const logs = await exec("docker logs " + id)
+  // const logs = await spawn("docker logs " + id)
+  const logs = await exec("docker logs " + id + " --since 1h",{maxBuffer: 1024 * 500})
 
+
+
+  console.log(logs.stdout.trim())
+
+  // return logs.stdout.trim()
   return logs.stdout.trim()
   
 }
@@ -36,7 +44,7 @@ async function sendEvent(event) {
     const template = templates[`${event.Type}_${event.Action}`];
     if (template) {
       const attachment = template(event);
-      await mail.send(attachment)
+      await mail.send(attachment, event.Actor.Attributes.image)
     }
   }
 }
@@ -50,9 +58,9 @@ async function sendEventStream() {
 
 async function sendVersion() {
   const version = await docker.version();
-  const text = 'Docker is running';
+  const text = 'Docker email notifier started';
   Seq(version).map((value, title) => text += `${title}: <b>${value}</b>`);
-  mail.send(text);
+  mail.send(text, "docker running");
 }
 
 async function main() {
